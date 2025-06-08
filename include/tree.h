@@ -17,7 +17,7 @@ class PMTree {
   int factorial(int n) const;
 
  public:
-  PMTree(const std::vector<char>& input);
+  explicit PMTree(const std::vector<char>& input);
   const std::vector<char>& getElements() const { return elements; }
   std::vector<std::vector<char>> getAllPerms() const;
   int countPermutations() const;
