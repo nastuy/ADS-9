@@ -42,8 +42,8 @@ std::vector<std::vector<char>> PMTree::getAllPerms() const {
     std::vector<std::vector<char>> res;
     if (!root || root->children.empty()) return res;
     std::vector<std::pair<Node*, std::vector<char>>> stack;
-    for (auto& child : root->children) {
-        stack.emplace_back(child.get(), std::vector<char>{});
+    for (auto it = root->children.rbegin(); it != root->children.rend(); ++it) {
+        stack.emplace_back(it->get(), std::vector<char>{});
     }
     while (!stack.empty()) {
         auto [node, current] = stack.back();
@@ -52,8 +52,7 @@ std::vector<std::vector<char>> PMTree::getAllPerms() const {
         if (node->children.empty()) {
             res.push_back(current);
         } else {
-            for (auto it = node->children.begin();
-                it != node->children.end(); ++it) {
+            for (auto it = node->children.rbegin(); it != node->children.rend(); ++it) {
                 stack.emplace_back(it->get(), current);
             }
         }
