@@ -22,10 +22,10 @@ void PMTree::buildTree(Node* parent, const std::vector<char>& remaining) {
   }
 }
 
-PMTree::PMTree(const std::vector<char>& input) : elem(input) {
-  std::sort(elem.begin(), elem.end());
+PMTree::PMTree(const std::vector<char>& input) : elements(input) {
+  std::sort(elements.begin(), elements.end());
   root = std::make_unique<Node>();
-  buildTree(root.get(), elem);
+  buildTree(root.get(), elements);
 }
 
 int PMTree::factorial(int n) const {
@@ -35,7 +35,7 @@ int PMTree::factorial(int n) const {
 }
 
 int PMTree::countPermutations() const {
-  return factorial(elem.size());
+  return factorial(elements.size());
 }
 
 std::vector<std::vector<char>> PMTree::getAllPerms() const {
@@ -70,13 +70,13 @@ std::vector<char> getPerm1(PMTree& tree, int num) {
 }
 
 std::vector<char> getPerm2(PMTree& tree, int num) {
-  const auto& elem = tree.getelem();
+  const auto& elements = tree.getElements();
   int total = tree.countPermutations();
   if (num < 1 || num > total) return {};
   std::vector<char> res;
-  std::vector<char> remaining = elem;
+  std::vector<char> remaining = elements;
   int currentNum = num - 1;
-  for (int n = elem.size(); n > 0; --n) {
+  for (int n = elements.size(); n > 0; --n) {
     int fact = 1;
     for (int i = 1; i < n; ++i) fact *= i;
     int index = currentNum / fact;
