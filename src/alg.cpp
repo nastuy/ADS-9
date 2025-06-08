@@ -8,12 +8,11 @@
 #include <algorithm>
 #include <vector>
 #include  "tree.h"
-using namespace std;
 void PMTree::buildTree(Node* parent, const vector<char>& remaining) {
   for (size_t i = 0; i < remaining.size(); ++i) {
     auto newNode = make_unique<Node>();
     newNode->value = remaining[i];
-    vector<char> newRemaining;
+    std::vector<char> newRemaining;
     for (size_t j = 0; j < remaining.size(); ++j) {
       if (j != i) newRemaining.push_back(remaining[j]);
     }
@@ -41,7 +40,7 @@ int PMTree::countPermutations() const {
 vector<vector<char>> PMTree::getAllPerms() const {
   vector<vector<char>> res;
   if (!root) return res;
-  vector<pair<Node*, vector<char>>> stack;
+  std::vector<pair<Node*, vector<char>>> stack;
   stack.push_back({ root.get(), {} });
   while (!stack.empty()) {
     auto [node, current] = stack.back();
@@ -73,8 +72,8 @@ vector<char> getPerm2(PMTree& tree, int num) {
   const auto& elem = tree.getelem();
   int total = tree.countPermutations();
   if (num < 1 || num > total) return {};
-  vector<char> res;
-  vector<char> remaining = elem;
+  std::vector<char> res;
+  std::vector<char> remaining = elem;
   int currentNum = num - 1;
   for (int n = elem.size(); n > 0; --n) {
     int fact = 1;
