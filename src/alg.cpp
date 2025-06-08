@@ -1,29 +1,30 @@
 // Copyright 2022 NNTU-CS
-#include  <iostream>
-#include  <fstream>
-#include  <locale>
-#include  <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <locale>
+#include <cstdlib>
 #include <utility>
 #include <memory>
 #include <algorithm>
 #include <vector>
-#include  "tree.h"
-void PMTree::buildTree(Node* parent, const vector<char>& remaining) {
+#include "tree.h"
+
+void PMTree::buildTree(Node* parent, const std::vector<char>& remaining) {
   for (size_t i = 0; i < remaining.size(); ++i) {
-    auto newNode = make_unique<Node>();
+    auto newNode = std::make_unique<Node>();
     newNode->value = remaining[i];
     std::vector<char> newRemaining;
     for (size_t j = 0; j < remaining.size(); ++j) {
       if (j != i) newRemaining.push_back(remaining[j]);
     }
     buildTree(newNode.get(), newRemaining);
-    parent->children.push_back(move(newNode));
+    parent->children.push_back(std::move(newNode));
   }
 }
 
-PMTree::PMTree(const vector<char>& input) : elem(input) {
-  sort(elem.begin(), elem.end());
-  root = make_unique<Node>();
+PMTree::PMTree(const std::vector<char>& input) : elem(input) {
+  std::sort(elem.begin(), elem.end());
+  root = std::make_unique<Node>();
   buildTree(root.get(), elem);
 }
 
@@ -37,10 +38,10 @@ int PMTree::countPermutations() const {
   return factorial(elem.size());
 }
 
-std::vector<vector<char>> PMTree::getAllPerms() const {
-  std::vector<vector<char>> res;
+std::vector<std::vector<char>> PMTree::getAllPerms() const {
+  std::vector<std::vector<char>> res;
   if (!root) return res;
-  std::vector<pair<Node*, vector<char>>> stack;
+  std::vector<std::pair<Node*, std::vector<char>>> stack;
   stack.push_back({ root.get(), {} });
   while (!stack.empty()) {
     auto [node, current] = stack.back();
@@ -48,9 +49,9 @@ std::vector<vector<char>> PMTree::getAllPerms() const {
     current.push_back(node->value);
     if (node->children.empty()) {
       res.push_back(current);
-    } else {
-      for (auto it = node->children.rbegin();
-        it != node->children.rend(); ++it) {
+    }
+    else {
+      for (auto it = node->children.rbegin(); it != node->children.rend(); ++it) {
         stack.push_back({ it->get(), current });
       }
     }
@@ -58,7 +59,7 @@ std::vector<vector<char>> PMTree::getAllPerms() const {
   return res;
 }
 
-std::vector<vector<char>> getAllPerms(const PMTree& tree) {
+std::vector<std::vector<char>> getAllPerms(const PMTree& tree) {
   return tree.getAllPerms();
 }
 
