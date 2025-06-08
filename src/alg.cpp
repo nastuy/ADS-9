@@ -49,9 +49,9 @@ std::vector<std::vector<char>> PMTree::getAllPerms() const {
     current.push_back(node->value);
     if (node->children.empty()) {
       res.push_back(current);
-    }
-    else {
-      for (auto it = node->children.rbegin(); it != node->children.rend(); ++it) {
+    } else {
+      for (auto it = node->children.rbegin();
+        it != node->children.rend(); ++it) {
         stack.push_back({ it->get(), current });
       }
     }
