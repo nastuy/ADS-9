@@ -37,8 +37,8 @@ int PMTree::countPermutations() const {
   return factorial(elem.size());
 }
 
-vector<vector<char>> PMTree::getAllPerms() const {
-  vector<vector<char>> res;
+std::vector<vector<char>> PMTree::getAllPerms() const {
+  std::vector<vector<char>> res;
   if (!root) return res;
   std::vector<pair<Node*, vector<char>>> stack;
   stack.push_back({ root.get(), {} });
@@ -58,17 +58,17 @@ vector<vector<char>> PMTree::getAllPerms() const {
   return res;
 }
 
-vector<vector<char>> getAllPerms(const PMTree& tree) {
+std::vector<vector<char>> getAllPerms(const PMTree& tree) {
   return tree.getAllPerms();
 }
 
-vector<char> getPerm1(PMTree& tree, int num) {
+std::vector<char> getPerm1(PMTree& tree, int num) {
   auto all = getAllPerms(tree);
   if (num < 1 || num > all.size()) return {};
   return all[num - 1];
 }
 
-vector<char> getPerm2(PMTree& tree, int num) {
+std::vector<char> getPerm2(PMTree& tree, int num) {
   const auto& elem = tree.getelem();
   int total = tree.countPermutations();
   if (num < 1 || num > total) return {};
