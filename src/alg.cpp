@@ -44,11 +44,9 @@ int PMTree::countPermutations() const {
 std::vector<std::vector<char>> PMTree::getAllPerms() const {
     std::vector<std::vector<char>> res;
     if (!root) return res;
-    
     std::function<void(Node*, std::vector<char>&)> collectPerms;
     collectPerms = [&](Node* node, std::vector<char>& current) {
         current.push_back(node->value);
-        
         if (node->children.empty()) {
             res.push_back(current);
         } else {
@@ -56,15 +54,12 @@ std::vector<std::vector<char>> PMTree::getAllPerms() const {
                 collectPerms(child.get(), current);
             }
         }
-        
         current.pop_back();
     };
-    
     std::vector<char> current;
     for (auto& child : root->children) {
         collectPerms(child.get(), current);
     }
-    
     return res;
 }
 
