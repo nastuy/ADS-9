@@ -10,9 +10,6 @@
 #include "tree.h"
 
 void PMTree::buildTree(Node* parent, const std::vector<char>& remaining) {
-    if (remaining.empty()) {
-        return;
-    }
     for (size_t i = 0; i < remaining.size(); ++i) {
         auto newNode = std::make_unique<Node>();
         newNode->value = remaining[i];
@@ -43,22 +40,22 @@ int PMTree::countPermutations() const {
 
 std::vector<std::vector<char>> PMTree::getAllPerms() const {
     std::vector<std::vector<char>> res;
-    if (!root) return res;
-    std::function<void(Node*, std::vector<char>&)> collectPerms;
-    collectPerms = [&](Node* node, std::vector<char>& current) {
+    if (!root || root->children.empty()) return res;
+    std::vector<std::pair<Node*, std::vector<char>>> stack;
+    for (auto& child : root->children) {
+        stack.emplace_back(child.get(), std::vector<char>{});
+    }
+    while (!stack.empty()) {
+        auto [node, current] = stack.back();
+        stack.pop_back();
         current.push_back(node->value);
         if (node->children.empty()) {
             res.push_back(current);
         } else {
-            for (auto& child : node->children) {
-                collectPerms(child.get(), current);
+            for (auto it = node->children.begin(); it != node->children.end(); ++it) {
+                stack.emplace_back(it->get(), current);
             }
         }
-        current.pop_back();
-    };
-    std::vector<char> current;
-    for (auto& child : root->children) {
-        collectPerms(child.get(), current);
     }
     return res;
 }
